@@ -1,0 +1,93 @@
+.bl {
+  border-left: solid 1px lightgray;
+}
+
+.mt, .tab-content {
+  margin-top: 20px;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+  background: #f5f5f5 !important;
+  color: #555 !important;
+}
+
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+  background: #f5f5f5 !important;
+  color: #555 !important;
+}
+
+.app-container {
+  margin-top: 70px;
+}
+
+.nvd3-svg .resize.e {
+  display: none;
+}
+.nvd3-svg .resize.w {
+  display: none;
+}
+
+.kan-samples h1 {
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+.kan-samples .kan-no-data {
+  text-align: center;
+  font-weight: bold;
+}
+.kan-samples .kan-sample-description {
+  color: gray;
+}
+.kan-samples .form-inline .form-group:not(:first-child) {
+  margin-left: 10px;
+}
+.kan-samples .kan-alert-brief {
+  background: #f5f5f5 !important;
+  color: #555 !important;
+  border: solid 1px #ddd;
+}
+.kan-samples .kan-filter-form {
+  border: solid 1px lightgray;
+  background: #F5F5F6;
+  padding: 10px;
+}
+.kan-samples .kan-filter-form .kan-title {
+  font-weight: bolder;
+}
+.kan-samples .kan-filter-form label {
+  font-weight: inherit;
+  text-align: left;
+}
+.kan-samples .kan-samples-sidebar .nav > li > a {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+}
+.kan-samples .kan-samples-sidebar .nav > .active:focus > a, .kan-samples .kan-samples-sidebar .nav > .active:hover > a, .kan-samples .kan-samples-sidebar .nav > .active > a {
+  font-weight: 700;
+  color: #555 !important;
+  background-color: transparent;
+  border-left: 2px solid #555 !important;
+}
+.kan-samples .kan-samples-sidebar .nav > li > a {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+}
+.kan-samples .kan-samples-sidebar .nav .nav > li > a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/*# sourceMappingURL=main.css.map */
