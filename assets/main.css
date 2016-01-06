@@ -11,13 +11,13 @@
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
-  background: #f5f5f5 !important;
-  color: #555 !important;
+  background: #d9edf7;
+  color: #31708f;
 }
 
 .nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
-  background: #f5f5f5 !important;
-  color: #555 !important;
+  background: #d9edf7;
+  color: #31708f;
 }
 
 .app-container {
@@ -31,11 +31,15 @@
   display: none;
 }
 
+.kan-samples .kan-json-code {
+  max-height: 300px;
+}
 .kan-samples h1 {
   margin-top: 0px;
   margin-bottom: 30px;
 }
 .kan-samples .kan-no-data {
+  color: darkred;
   text-align: center;
   font-weight: bold;
 }

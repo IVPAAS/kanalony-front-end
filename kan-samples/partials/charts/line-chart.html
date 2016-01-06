@@ -1,79 +1,14 @@
 <div>
     <h1>Line chart samples</h1>
     <div class="alert alert-warning" data-ng-show="vm.errorMessage">{{ vm.errorMessage }}</div>
-    <div class="alert kan-alert-brief">
-        <p>This page show various line charts that are used in Kaltura Analytics 2.0 as described in issue #<a
+
+        <p>Examples for line charts supported in Kaltura Analytics 2.0 as described in issue #<a
             href="https://kaltura.atlassian.net/browse/PLAT-4900" target="_blank">PLAT-4900</a></p>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Extract data
-        </div>
-        <div class="panel-body">
-            <div class="kan-sample-description">
 
-                <p>Use one of the below forms to retrieve data for the line charts.
-                </p></div>
-            <div class="row ">
-                <div class="col-xs-6 ">
-                    <form class="form-horizontal kan-filter-form " novalidate data-ng-submit="vm.refreshAll('demo')">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <p class="form-control-static kan-title">Demo server (recorded responses)</p>
-                            </div>
-                        </div>
+   <div kan-sample-data-loader k-load-data="vm.loadData(context);"></div>
 
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" data-ng-model="vm.filters.top10"
-                                               data-ng-change="vm.refreshAll()"> Take only 10 values per series
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Load demo data</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-sm-6">
-                    <form class="form-horizontal kan-filter-form " novalidate data-ng-submit="vm.refreshAll('api')">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <p class="form-control-static kan-title">Kaltura API (Production)</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Partner Id</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Partner Id">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Partner Secret</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Partner Secret">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" class="btn btn-default">Load API data</button>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="panel panel-default">
+    <div class="panel panel-default panel-info">
         <div class="panel-heading">
             Standard line chart
         </div>
@@ -86,13 +21,16 @@
                     <li>Toggle on/off view finder that allow the user to focus on specific area of the chart.</li>
                 </ul>
             </div>
+            <div class="kan-sample-description" data-ng-show="vm.samplesDescription">
+                <pre>{{vm.samplesDescription}}</pre>
+            </div>
             <hr>
             <uib-tabset type="pills">
-                <uib-tab heading="Demo">
+                <uib-tab heading="Chart">
                     <div class="kan-no-data" data-ng-show="vm.loadingData"> -Loading data -
                     </div>
                     <div class="kan-no-data" data-ng-hide="vm.loadingData || vm.samples.sample1.data">- No chart data found for this
-                        sample (use one of the forms above to request data) -
+                        sample (use 'Data Source' widget above to invoke data request) -
                     </div>
                     <form class="form-inline" data-ng-show="vm.samples.sample1.data">
                         <div class="form-group">
@@ -110,16 +48,16 @@
                           data-api="vm.samples.sample1.api" data-config="vm.config"></nvd3>
                 </uib-tab>
                 <uib-tab heading="Configuration">
-                    <pre>{{vm.samples.sample1.options | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample1.options | json}}</pre>
                 </uib-tab>
                 <uib-tab heading="Data">
-                    <pre>{{vm.samples.sample1.data | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample1.data | json}}</pre>
                 </uib-tab>
             </uib-tabset>
         </div>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default panel-info">
         <div class="panel-heading">
             Multi y-axis chart
         </div>
@@ -132,28 +70,31 @@
                     </li>
                 </ul>
             </div>
+            <div class="kan-sample-description" data-ng-show="vm.samplesDescription">
+                <pre>{{vm.samplesDescription}}</pre>
+            </div>
             <hr>
             <uib-tabset type="pills">
-                <uib-tab heading="Demo">
+                <uib-tab heading="Chart">
                     <div class="kan-no-data" data-ng-show="vm.loadingData"> -Loading data -
                     </div>
                     <div class="kan-no-data" data-ng-hide="vm.loadingData || vm.samples.sample2.data">- No chart data found for this
-                        sample (use one of the forms above to request data) -
+                        sample (use 'Data Source' widget above to invoke data request) -
                     </div>
                     <nvd3 data-options="vm.samples.sample2.options" data-data="vm.samples.sample2.data"
                           data-api="vm.samples.sample2.api" data-config="vm.config"></nvd3>
                 </uib-tab>
                 <uib-tab heading="Configuration">
-                    <pre>{{vm.samples.sample2.options | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample2.options | json}}</pre>
                 </uib-tab>
                 <uib-tab heading="Data">
-                    <pre>{{vm.samples.sample2.data | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample2.data | json}}</pre>
                 </uib-tab>
             </uib-tabset>
         </div>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default panel-info">
         <div class="panel-heading">
             Cumulative line chart
         </div>
@@ -169,13 +110,16 @@
                     <li>Open issue - At the moment I didn't found a way to show view finder for this type of chart.</li>
                 </ul>
             </div>
+            <div class="kan-sample-description" data-ng-show="vm.samplesDescription">
+                <pre>{{vm.samplesDescription}}</pre>
+            </div>
             <hr>
             <uib-tabset type="pills">
-                <uib-tab heading="Demo">
+                <uib-tab heading="Chart">
                     <div class="kan-no-data" data-ng-show="vm.loadingData"> -Loading data -
                     </div>
                     <div class="kan-no-data" data-ng-hide="vm.loadingData || vm.samples.sample3.data">- No chart data found for this
-                        sample (use one of the forms above to request data) -
+                        sample (use 'Data Source' widget above to invoke data request) -
                     </div>
                     <form class="form-inline" data-ng-show="vm.samples.sample3.data">
                         <div class="form-group">
@@ -189,10 +133,10 @@
                           data-api="vm.samples.sample3.api" data-config="vm.config"></nvd3>
                 </uib-tab>
                 <uib-tab heading="Configuration">
-                    <pre>{{vm.samples.sample3.options | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample3.options | json}}</pre>
                 </uib-tab>
                 <uib-tab heading="Data">
-                    <pre>{{vm.samples.sample3.data | json}}</pre>
+                    <pre class="kan-json-code">{{vm.samples.sample3.data | json}}</pre>
                 </uib-tab>
             </uib-tabset>
         </div>
