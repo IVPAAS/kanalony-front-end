@@ -463,15 +463,12 @@ module.exports = function (kanSamplesService) {
 
 var _ = require('lodash');
 
-module.exports = function (kanSamplesService) {
+module.exports = function (kanSamplesService, $q) {
     var self = this;
 
 
-
-    function clearChartsData()
-    {
-        _.each(self.samples,function(sample)
-        {
+    function clearChartsData() {
+        _.each(self.samples, function (sample) {
             sample.description = '';
             sample.data = null;
         });
@@ -479,10 +476,8 @@ module.exports = function (kanSamplesService) {
         refreshChartsLayout();
     }
 
-    function refreshChartsLayout()
-    {
-        _.each(self.samples,function(sample)
-        {
+    function refreshChartsLayout() {
+        _.each(self.samples, function (sample) {
             sample.refresh();
         });
 
@@ -495,35 +490,30 @@ module.exports = function (kanSamplesService) {
         clearChartsData();
         self.loadingData = true;
 
-        kanSamplesService.getData(origin,'barChart').then(function(result)
-            {
-                self.samples.sample1.description = result.description;
-                self.samples.sample1.data = result.data;
+        var promises = [];
 
-                self.samples.sample2.description = result.description;
-                self.samples.sample2.data = [result.data[0]];
+        promises.push(kanSamplesService.getData(origin, 'barChart'));
+        promises.push(kanSamplesService.getData(origin, 'barChartCompare', {take: 3}));
 
-                refreshChartsLayout();
 
-                self.errorMessage = '';
-                self.loadingData = false;
-            },function(reason)
-            {
-                self.errorMessage = "Failed to load data : '" + reason.errorMessage + "'";
-                self.loadingData = false;
-            });
+        $q.all(promises).then(function (results) {
+            var request1 = results[0];
+            var request2 = results[1];
 
-       kanSamplesService.getData(origin,'barChartCompare',{take:3}).then(function(result)
-        {
-            self.samples.sample3.description = result.description;
-            self.samples.sample3.data = result.data;
+            self.samples.sample1.description = request1.description;
+            self.samples.sample1.data = request1.data;
+
+            self.samples.sample2.description = request1.description;
+            self.samples.sample2.data = [request1.data[0]];
+
+            self.samples.sample3.description = request2.description;
+            self.samples.sample3.data = request2.data;
 
             refreshChartsLayout();
 
             self.errorMessage = '';
             self.loadingData = false;
-        },function(reason)
-        {
+        }, function (reason) {
             self.errorMessage = "Failed to load data : '" + reason.errorMessage + "'";
             self.loadingData = false;
         });
@@ -537,7 +527,7 @@ module.exports = function (kanSamplesService) {
 
     self.filters = {
         top10: false,
-        demoServer : true
+        demoServer: true
     };
 
     self.refreshChartsLayout = refreshChartsLayout;
@@ -552,8 +542,7 @@ module.exports = function (kanSamplesService) {
         sample1: {
             data: null,
             api: {}, /* this object will be modified by nvd3 directive to have invokation functions */
-            viewData: {
-            },
+            viewData: {},
             refresh: function () {
 
                 // run the refresh api of the actual nvd3 directive
@@ -565,8 +554,12 @@ module.exports = function (kanSamplesService) {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     height: 450,
-                    x: function(d){return d.label;},
-                    y: function(d){return d.value;},
+                    x: function (d) {
+                        return d.label;
+                    },
+                    y: function (d) {
+                        return d.value;
+                    },
                     useInteractiveGuideline: true,
                     margin: {
                         top: 20,
@@ -582,7 +575,7 @@ module.exports = function (kanSamplesService) {
                     },
                     yAxis: {
                         axisLabel: 'Values',
-                        tickFormat: function(d){
+                        tickFormat: function (d) {
                             return d3.format(',.2f')(d);
                         },
                     }
@@ -593,8 +586,7 @@ module.exports = function (kanSamplesService) {
         sample2: {
             data: null,
             api: {}, /* this object will be modified by nvd3 directive to have invokation functions */
-            viewData: {
-            },
+            viewData: {},
             refresh: function () {
 
                 // run the refresh api of the actual nvd3 directive
@@ -606,18 +598,22 @@ module.exports = function (kanSamplesService) {
                 chart: {
                     type: 'discreteBarChart',
                     height: 450,
-                    margin : {
+                    margin: {
                         top: 20,
                         right: 20,
                         bottom: 50,
                         left: 50
                     },
-                    staggerLabels : true,
-                    rotateLabels : true,
-                    x: function(d){return d.label;},
-                    y: function(d){return d.value;},
+                    staggerLabels: true,
+                    rotateLabels: true,
+                    x: function (d) {
+                        return d.label;
+                    },
+                    y: function (d) {
+                        return d.value;
+                    },
                     showValues: true,
-                    valueFormat: function(d){
+                    valueFormat: function (d) {
                         return d3.format(',.4f')(d);
                     },
                     duration: 500,
@@ -627,7 +623,7 @@ module.exports = function (kanSamplesService) {
                     yAxis: {
                         axisLabel: 'Total',
                         axisLabelDistance: 0,
-                        showMaxMin : false
+                        showMaxMin: false
                     }
                 }
 
@@ -636,8 +632,7 @@ module.exports = function (kanSamplesService) {
         sample3: {
             data: null,
             api: {}, /* this object will be modified by nvd3 directive to have invokation functions */
-            viewData: {
-            },
+            viewData: {},
             refresh: function () {
 
                 // run the refresh api of the actual nvd3 directive
@@ -649,8 +644,12 @@ module.exports = function (kanSamplesService) {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     height: 450,
-                    x: function(d){return d.label;},
-                    y: function(d){return d.value;},
+                    x: function (d) {
+                        return d.label;
+                    },
+                    y: function (d) {
+                        return d.value;
+                    },
                     useInteractiveGuideline: true,
                     margin: {
                         top: 20,
@@ -666,7 +665,7 @@ module.exports = function (kanSamplesService) {
                     },
                     yAxis: {
                         axisLabel: 'Values',
-                        tickFormat: function(d){
+                        tickFormat: function (d) {
                             return d3.format(',.2f')(d);
                         },
                     }
@@ -1183,24 +1182,47 @@ arguments[4][8][0].apply(exports,arguments)
 },{"dup":8}],23:[function(require,module,exports){
 var storage = {
     'barChart': {
-        description: 'Report: Content Reports > Content Drop-off',
+        description: 'Report: Content Reports > Content Drop-off\nFilter: from 01/12/2015 - 01/01/2016',
         data: [{
             "id": "content_dropoff",
             "data": "count_plays,392356;count_plays_25,304802;count_plays_50,287516;count_plays_75,273269;count_plays_100,252204;play_through_ratio,0.6428;",
             "objectType": "KalturaReportGraph"
         }]
-    },'barChartCompare': {
-        description: '',
+    }, 'barChartCompare': {
+        description: 'Report: Content Reports > Content Drop-off comparison of 3 entries\nFilter: from 01/12/2015 - 01/01/2016',
         data: [{
-            "id": "content_dropoff",
-            "data": "count_plays,392356;count_plays_25,304802;count_plays_50,287516;count_plays_75,273269;count_plays_100,252204;play_through_ratio,0.6428;",
-            "objectType": "KalturaReportGraph"
+            "key": "Five retention reducers",
+            "values": [{"label": "count_plays", "value": 493}, {
+                "label": "count_plays_25",
+                "value": 423
+            }, {"label": "count_plays_50", "value": 419}, {
+                "label": "count_plays_75",
+                "value": 414
+            }, {"label": "count_plays_100", "value": 405}]
+        }, {
+            "key": "Working with  using  and minimizing the ribbon",
+            "values": [{"label": "count_plays", "value": 145}, {
+                "label": "count_plays_25",
+                "value": 123
+            }, {"label": "count_plays_50", "value": 120}, {
+                "label": "count_plays_75",
+                "value": 114
+            }, {"label": "count_plays_100", "value": 102}]
+        }, {
+            "key": "Adjusting spacing",
+            "values": [{"label": "count_plays", "value": 128}, {
+                "label": "count_plays_25",
+                "value": 102
+            }, {"label": "count_plays_50", "value": 90}, {
+                "label": "count_plays_75",
+                "value": 70
+            }, {"label": "count_plays_100", "value": 61}]
         }]
     }
 
     ,
     'lineChart': {
-        description: 'Report: Content Reports > Top Content\nMatrics: "Play","Minutes Viewed","Player impression"\nDimension: "Time"',
+        description: 'Report: Content Reports > Top Content\nMatrics: "Play","Minutes Viewed","Player impression"\nDimension: "Time"\nFilter: from 01/12/2015 - 01/01/2016',
         data: [{
             "id": "count_plays",
             "data": "20151206,7547;20151207,19798;20151208,20952;20151209,20235;20151210,18483;20151211,15939;20151212,6551;20151213,8141;20151214,20713;20151215,23833;20151216,18796;20151217,16575;20151218,14394;20151219,3292;20151220,3365;20151221,9351;20151222,9292;20151223,6960;20151224,2536;20151225,1432;20151226,2908;20151227,3592;20151228,9357;20151229,10756;20151230,10916;20151231,7376;20160101,4372;",
@@ -1216,7 +1238,7 @@ var storage = {
         }]
     },
     'areaChart': {
-        description: 'Report: Content Reports > Top Content\nMatrics: "Play","Minutes Viewed","Player impression"\nDimension: "Time"',
+        description: 'Report: Content Reports > Top Content\nMatrics: "Play","Minutes Viewed","Player impression"\nDimension: "Time"\nFilter: from 01/12/2015 - 01/01/2016',
         data: [{
             "id": "count_plays",
             "data": "20151201,25146;20151202,23720;20151203,19717;20151204,20153;20151205,6158;20151206,7547;20151207,19798;20151208,20952;20151209,20235;20151210,18483;20151211,15939;20151212,6551;20151213,8141;20151214,20713;20151215,23833;20151216,18796;20151217,16575;20151218,14394;20151219,3292;20151220,3365;20151221,9351;20151222,9292;20151223,6960;20151224,2536;20151225,1432;20151226,2908;20151227,3592;20151228,9357;20151229,10756;20151230,10916;20151231,7376;20160101,4372;",
@@ -1232,8 +1254,8 @@ var storage = {
         }]
     },
     'pieChart': {
-        description : '',
-        data : [
+        description : 'Report: System Reports > Operating Systems (comparison of 5 operating systems)\nFilter: from 01/12/2015 - 01/01/2016',
+data: [
             {
                 "id": "count_plays",
                 "data": "APPLE_WEB_KIT,41492;BLACKBERRY10,11;BOT,0;CHROME,13653;CHROME11,13;CHROME12,1;CHROME18,16;CHROME19,1;CHROME22,129;CHROME23,8;CHROME25,34;CHROME26,19;CHROME27,2;CHROME28,31;CHROME29,5;CHROME30,421;CHROME31,34;CHROME32,11;CHROME33,146;CHROME34,54;CHROME35,51;CHROME36,19;CHROME37,14;CHROME38,453;CHROME39,80;CHROME40,72;CHROME41,130;CHROME42,113;CHROME43,152;CHROME44,189;CHROME45,292;CHROME46,16495;CHROME_MOBILE,16560;COAST,4;EDGE,1076;EDGE12,2250;EDGE_MOBILE12,168;FIREFOX10,4;FIREFOX12,2;FIREFOX13,3;FIREFOX15,6;FIREFOX16,23;FIREFOX17,0;FIREFOX20,2;FIREFOX22,1;FIREFOX23,0;FIREFOX24,2;FIREFOX26,2;FIREFOX27,1;FIREFOX28,2;FIREFOX29,23;FIREFOX30,4;FIREFOX31,12;FIREFOX32,8;FIREFOX33,8;FIREFOX34,0;FIREFOX35,8;FIREFOX36,28;FIREFOX37,6;FIREFOX38,105;FIREFOX39,50;FIREFOX4,1469;FIREFOX40,61;FIREFOX41,221;FIREFOX42,5082;FIREFOX_MOBILE,92;IE,6;IE10,509;IE11,17572;IE7,170;IE8,31;IE9,296;IEMOBILE10,67;IEMOBILE11,1183;IEMOBILE9,37;MOBILE_SAFARI,27522;MOZILLA,2;OPERA,308;OPERA12,11;OPERA24,2;OPERA29,2;OPERA30,0;OPERA_MINI,0;OPERA_MOBILE,44;SAFARI,5948;SAFARI4,630;SAFARI5,134;SAFARI6,452;SAFARI7,378;SAFARI8,1304;UNKNOWN,11;",
@@ -1403,7 +1425,10 @@ module.exports = function ($http, $q, kanAPIFacade) {
                         values: convertAPIDataToKeyValueArray(item.data, 'labelNumberMultiSeries', filters)
                     };
                 });
-
+                break;
+            case 'barChartCompare':
+                result = responseData;
+                break;
             case 'pieChart':
                 result = _.map(responseData, function (item) {
                     return {
@@ -1459,8 +1484,12 @@ module.exports = function ($http, $q, kanAPIFacade) {
                 description += 'Report: Content Reports > Top Content\nMatrics: (determined by response)\nDimension: "Time"\nFilter: from 01/12/2015 - 01/01/2016';
                 break;
             case 'pieChart':
-
-                break;
+                requestParams = {
+                    reportType: '22',
+                    reportInputFilter: {fromDay: '20151201', toDay: '20160101'}
+                };
+                description += 'Report: System Reports > Platforms (comparison of 5 platforms)\nFilter: from 01/12/2015 - 01/01/2016';
+                break
             default:
                 break;
         }
@@ -1482,7 +1511,27 @@ module.exports = function ($http, $q, kanAPIFacade) {
         };
 
          kanAPIFacade.doRequest(tableRequestParams, {service: 'report', action: "getTable"}).then(function (result) {
+             var resultData = result.data;
+             var data = _.map(_.words(resultData.data,/[^;]+/g),function(item)
+             {
+                 return  _.zipObject(_.words(resultData.header,/[^,]+/g), _.map(_.words(item,/[^,]+/g),function(item) { return /^[0-9]+$/.test(item) ? parseFloat(item) : item;}));
+             });
 
+             var filteredData = _.chain(data).sortByOrder(['count_plays'], ['desc']).take(3).map(function(item) {
+                 var values = [];
+                 _.forEach(item,function(value,key)
+                 {
+                     if (key.indexOf('count') === 0)
+                     {
+                         values.push({label : key, value : value});
+                     }
+
+                 });
+                return {key : item['entry_name'],values : values}
+             }).value();
+             deferred.resolve({
+                 description: 'Report: Content Reports > Content Drop-off (comparison of 3 entries)',
+                 data : filteredData});
         });
 
         return deferred.promise;
