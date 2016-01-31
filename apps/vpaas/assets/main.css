@@ -1,0 +1,307 @@
+.bl {
+  border-left: solid 1px lightgray;
+}
+
+.mt, .tab-content {
+  margin-top: 20px;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+  background: #d9edf7;
+  color: #31708f;
+}
+
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+  background: #d9edf7;
+  color: #31708f;
+}
+
+.nvd3-svg .resize.e {
+  display: none;
+}
+.nvd3-svg .resize.w {
+  display: none;
+}
+
+.kan-samples .kan-map-container {
+  position: relative;
+  height: 460px;
+}
+.kan-samples .kan-map-container div.worldmap.box {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  z-index: 100;
+  padding: 1em;
+  text-align: center;
+  min-width: 200px;
+}
+.kan-samples .kan-map-container .worldmap {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+}
+.kan-samples .kan-map-container .info {
+  padding: 6px 8px;
+  font: 14px/18px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.kan-samples .kan-map-container .legend {
+  position: absolute;
+  bottom: 3em;
+  right: 1em;
+  line-height: 18px;
+  color: #555;
+}
+.kan-samples .kan-map-container .legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.kan-samples .kan-json-code {
+  max-height: 300px;
+}
+.kan-samples h1 {
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+.kan-samples .kan-no-data {
+  color: darkred;
+  text-align: center;
+  font-weight: bold;
+}
+.kan-samples .kan-sample-description {
+  color: gray;
+}
+.kan-samples .form-inline .form-group:not(:first-child) {
+  margin-left: 10px;
+}
+.kan-samples .kan-alert-brief {
+  background: #f5f5f5 !important;
+  color: #555 !important;
+  border: solid 1px #ddd;
+}
+.kan-samples .kan-filter-form {
+  border: solid 1px lightgray;
+  background: #F5F5F6;
+  padding: 10px;
+}
+.kan-samples .kan-filter-form .kan-title {
+  font-weight: bolder;
+}
+.kan-samples .kan-filter-form label {
+  font-weight: inherit;
+  text-align: left;
+}
+.kan-samples .kan-samples-sidebar .nav > li > a {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+}
+.kan-samples .kan-samples-sidebar .nav > .active:focus > a, .kan-samples .kan-samples-sidebar .nav > .active:hover > a, .kan-samples .kan-samples-sidebar .nav > .active > a {
+  font-weight: 700;
+  color: #555 !important;
+  background-color: transparent;
+  border-left: 2px solid #555 !important;
+}
+.kan-samples .kan-samples-sidebar .nav > li > a {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+}
+.kan-samples .kan-samples-sidebar .nav .nav > li > a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.kau-app {
+  margin: 20px;
+}
+.kau-app .side-menu li {
+  padding-left: 20px;
+  position: relative;
+}
+.kau-app .side-menu li span {
+  cursor: pointer;
+}
+.kau-app .side-menu li span a {
+  color: inherit;
+  text-decoration: none;
+  outline: 0;
+}
+.kau-app .side-menu li.active:before {
+  content: '';
+  background: #00a1d5;
+  height: 100%;
+  width: 7px;
+  display: block;
+  position: absolute;
+  left: 8px;
+}
+.kau-app .side-menu ul {
+  list-style: none;
+  margin-top: 5px;
+  font-size: 15px;
+}
+.kau-app .side-menu ul li {
+  padding-left: 20px;
+}
+.kau-app .side-menu ul li span:hover {
+  text-shadow: 1px 1px 1px #ADACAC;
+}
+.kau-app .title-text {
+  font-size: 24px;
+  color: #5d5d5d;
+  padding: 0 10px;
+  line-height: 34px;
+  height: 34px;
+}
+.kau-app .ka-report-section {
+  margin-bottom: 20px;
+}
+.kau-app .k-report-chart {
+  height: 450px;
+}
+.kau-app table {
+  outline: 1px solid #d8d7d7;
+}
+.kau-app table:focus {
+  outline: 1px solid #d8d7d7;
+}
+.kau-app table:active {
+  outline: 1px solid #d8d7d7;
+}
+.kau-app table tr td,
+.kau-app table tr th {
+  border-left: 1px solid #d8d7d7;
+}
+.kau-app table tr td:first-child,
+.kau-app table tr th:first-child {
+  border-left: none;
+}
+.kau-app table.half-width {
+  width: 50%;
+  min-width: 480px;
+}
+.kau-app table.one-third-width {
+  width: 33%;
+  min-width: 320px;
+}
+.kau-app .usual-table thead {
+  background-image: #efefef;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#efefef));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #ffffff), color-stop(100%, #efefef));
+  /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* Opera 11.10+ */
+  background-image: -moz-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* FF3.6+ */
+  background-image: -ms-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* IE10+ */
+  background-image: linear-gradient(to bottom, #ffffff 25%, #efefef 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#efefef', GradientType=0);
+  /* IE6-9 */
+}
+.kau-app .usual-table thead tr th {
+  padding: 5px 10px 5px 10px;
+  font-size: 12px;
+}
+.kau-app .usual-table tbody tr td {
+  padding: 10px;
+  font-size: 12px;
+}
+.kau-app .usual-table tbody tr.even td {
+  background: #ffffff;
+}
+.kau-app .usual-table tbody tr.odd td {
+  background: #F5F5F5;
+}
+.kau-app .usual-table tbody tr:hover td {
+  background: #eaeaea;
+}
+.kau-app .title-text {
+  font-size: 24px;
+  color: #5d5d5d;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  line-height: 34px;
+  height: 34px;
+}
+.kau-app .ka-totals-section .ka-table {
+  width: 100%;
+  height: 135px;
+  display: table;
+  border: 1px solid #d8d7d7;
+  background-image: #efefef;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#efefef));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #ffffff), color-stop(100%, #efefef));
+  /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* Opera 11.10+ */
+  background-image: -moz-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* FF3.6+ */
+  background-image: -ms-linear-gradient(top, #ffffff 25%, #efefef 100%);
+  /* IE10+ */
+  background-image: linear-gradient(to bottom, #ffffff 25%, #efefef 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#efefef', GradientType=0);
+  /* IE6-9 */
+}
+.kau-app .ka-totals-section .ka-col {
+  display: table-cell;
+  border-left: 1px solid #d8d7d7;
+  width: 16.66666%;
+  position: relative;
+}
+.kau-app .ka-totals-section .title,
+.kau-app .ka-totals-section .units {
+  color: #5d5d5d;
+  font-size: 12px;
+  margin: 5px;
+}
+.kau-app .ka-totals-section .value {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  color: #189FAD;
+  font-size: 28.8px;
+  line-height: 28.8px;
+  word-wrap: break-word;
+}
+
+.ka-status-notification-container {
+  position: relative;
+}
+.ka-status-notification-container .ka-status-notification {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+}
+
+body {
+  background: #f0eeef;
+  min-width: 960px;
+}
+
+/*# sourceMappingURL=main.css.map */
