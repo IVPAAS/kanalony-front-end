@@ -46,7 +46,7 @@ angular.module('kauApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('kau-reports/directives/sections/kau-filters-section.html',
-    "<div><div class=\"title-text\" data-ng-if=\"vm.reportOptions.title\">{{vm.reportOptions.title}}</div><form class=\"form-inline\"><div class=\"form-group\" data-ng-if=\"vm.reportOptions.filters.dateRange\"><label>Date Range: <input date-range-picker class=\"form-control date-picker\" min=\"vm.dateOptions.min\" max=\"vm.dateOptions.max\" options=\"vm.dateOptions\" type=\"text\" ng-model=\"vm.filters.date\"></label></div><div class=\"pull-right\" data-ng-show=\"!vm.reportStatus.isLoading\"><a href=\"javascript:void(0)\" data-ng-click=\"vm.export()\">Export to CSV</a></div></form></div>"
+    "<div><div class=\"title-text\" data-ng-if=\"vm.reportOptions.title\">{{vm.reportOptions.title}}</div><form class=\"form-inline\"><div class=\"form-group\" data-ng-if=\"vm.reportOptions.filters.dateRange\">Date Range:<div class=\"date-picker\" date-range-picker ng-init=\"vm.initDateRangeControl()\" options=\"vm.dateOptions\" ng-model=\"vm.filters.date\"><i class=\"glyphicon glyphicon-calendar fa fa-calendar\"></i>&nbsp; <span></span> <b class=\"caret\"></b></div></div><div class=\"pull-right\" data-ng-show=\"!vm.reportStatus.isLoading\"><a href=\"javascript:void(0)\" data-ng-click=\"vm.export()\">Export to CSV</a></div></form></div>"
   );
 
 

@@ -117,8 +117,9 @@ module.exports = function()
 };
 
 },{}],7:[function(require,module,exports){
+(function (global){
 "use strict";
-
+var moment = (typeof window !== "undefined" ? window['moment'] : typeof global !== "undefined" ? global['moment'] : null);
 
 module.exports = function(kaKalturaAPIFacadeProvider)
 {
@@ -212,6 +213,7 @@ module.exports = function(kaKalturaAPIFacadeProvider)
     kaKalturaAPIFacadeProvider.registerHandler(handlerInfo,RequestHandler);
 };
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],8:[function(require,module,exports){
 "use strict";
 
@@ -744,8 +746,6 @@ module.exports = function()
 },{}],31:[function(require,module,exports){
 'use strict';
 
-require('../../vendors-shim-workaround');
-
 require('./kau-app-bootstrap');
 
 var appModule = require('./kau-app.module.js');
@@ -760,7 +760,7 @@ appModule.directive('kauSideMenu',require('./directives/kau-side-menu'));
 
 
 
-},{"../../vendors-shim-workaround":50,"./controllers/kau-report":29,"./directives/kau-side-menu":30,"./kau-app-bootstrap":32,"./kau-app.config.js":33,"./kau-app.module.js":34,"./kau-app.run.js":35,"./services/kau-reports-configuration.constant.js":36}],32:[function(require,module,exports){
+},{"./controllers/kau-report":29,"./directives/kau-side-menu":30,"./kau-app-bootstrap":32,"./kau-app.config.js":33,"./kau-app.module.js":34,"./kau-app.run.js":35,"./services/kau-reports-configuration.constant.js":36}],32:[function(require,module,exports){
 'use strict';
 
 
@@ -1688,12 +1688,14 @@ templateUrl: 'kau-reports/directives/sections/kau-diagnostic-section.html',
 
 
 },{}],40:[function(require,module,exports){
+(function (global){
 "use strict";
 
+var moment = (typeof window !== "undefined" ? window['moment'] : typeof global !== "undefined" ? global['moment'] : null);
 
 module.exports = function()
 {
-    function Controller($scope,kaAppRoutingUtils,  kauReportsData,$window)
+    function Controller($scope,kaAppRoutingUtils,  kauReportsData,$element,$timeout)
     {
         var self = this;
 
@@ -1721,11 +1723,17 @@ module.exports = function()
         self.filters = { date : { startDate: moment().subtract(2, 'month').startOf('month'), endDate: moment().endOf('month')}};
 
         self.dateOptions = {
-            max: moment().format('MM-DD-YYYY'),
+            showDropdowns : true,
+            autoApply : true,
+            maxDate : moment(),
             ranges: {
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 'Last 3 Months': [moment().subtract(2, 'month').startOf('month'), moment().endOf('month')]
+            },
+            isInvalidDate : function(date)
+            {
+                return !moment(date).isValid();
             }
         };
 
@@ -1744,6 +1752,24 @@ module.exports = function()
                 self.reportAPI.refreshReport.call(null);
             }
         });
+
+        self.initDateRangeControl = function()
+        {
+            // bypass
+            $timeout(function(){
+                var $dateRangeElement = $($element.find('.date-picker')[0]);
+                var dateRange = $dateRangeElement.data('daterangepicker');
+                var $dateRangeSpan = $($dateRangeElement.find('span')[0]);
+                var prevCallback = dateRange.callback;
+                var wrapperCallback = function(start,end)
+                {
+                    $dateRangeSpan.html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    return prevCallback.call(null,start,end);
+                };
+                dateRange.callback = wrapperCallback;
+                wrapperCallback(dateRange.startDate,dateRange.endDate);
+            },200);
+        }
 
 
     }
@@ -1773,6 +1799,7 @@ templateUrl: 'kau-reports/directives/sections/kau-filters-section.html',
 
 
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],41:[function(require,module,exports){
 "use strict";
 
@@ -1956,6 +1983,7 @@ module.exports = function(kFormatterUtils)
 
 
 },{}],45:[function(require,module,exports){
+(function (global){
 'use strict';
 
 var appModule = require('./kau-reports.module');
@@ -1980,7 +2008,7 @@ appModule.filter('kauDynamicFilter',require('./filters/kau-dynamic-filter'));
 
 // todo: move to core ui module
 
-var moment = require('moment');
+var moment = (typeof window !== "undefined" ? window['moment'] : typeof global !== "undefined" ? global['moment'] : null);
 
 appModule.filter('kDate',function()
 {
@@ -1990,7 +2018,8 @@ appModule.filter('kDate',function()
     };
 });
 
-},{"./directives/kau-report":37,"./directives/sections/kau-bar-chart-section":38,"./directives/sections/kau-diagnostic-section":39,"./directives/sections/kau-filters-section":40,"./directives/sections/kau-status-section":41,"./directives/sections/kau-table-section":42,"./directives/sections/kau-totals-section":43,"./filters/kau-dynamic-filter":44,"./kau-reports.config":46,"./kau-reports.module":47,"./kau-reports.run":48,"./services/kau-reports-data.service":49,"moment":"moment"}],46:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./directives/kau-report":37,"./directives/sections/kau-bar-chart-section":38,"./directives/sections/kau-diagnostic-section":39,"./directives/sections/kau-filters-section":40,"./directives/sections/kau-status-section":41,"./directives/sections/kau-table-section":42,"./directives/sections/kau-totals-section":43,"./filters/kau-dynamic-filter":44,"./kau-reports.config":46,"./kau-reports.module":47,"./kau-reports.run":48,"./services/kau-reports-data.service":49}],46:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -2015,7 +2044,10 @@ module.exports = angular.module('kauReports',['kaKalturaAPI','kaCommonUtils','da
 },{"../../../ka-infra/core/ka-common-utils":1,"../../../ka-infra/core/ka-kaltura-api":9,"../../../ka-infra/ui/ka-ui-charts":20,"../../../ka-infra/ui/ka-ui-common":25,"angular-daterangepicker":"angular-daterangepicker"}],48:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
 },{"dup":2}],49:[function(require,module,exports){
+(function (global){
 "use strict";
+
+var moment = (typeof window !== "undefined" ? window['moment'] : typeof global !== "undefined" ? global['moment'] : null);
 
 module.exports = function($q, kaKalturaAPIFacade, kauReportsConfiguration)
 {
@@ -2096,30 +2128,5 @@ module.exports = function($q, kaKalturaAPIFacade, kauReportsConfiguration)
 };
 
 
-},{}],50:[function(require,module,exports){
-'use strict';
-
-/* browserify-shim temoprary workaround */
-// TODO: should use browserify-shim
-require('angular');
-var lodash = require('lodash');
-window._ = lodash;
-
-require('json.sortify');
-
-var d3 = require('d3');
-window.d3 = d3;
-
-var moment = require('moment');
-window.moment = moment;
-
-var leaflet = require('leaflet');
-window.L = leaflet;
-
-require('nvd3');
-require('dateRangePicker');
-
-/* end of browserify-shim temoprary workaround */
-
-
-},{"angular":"angular","d3":"d3","dateRangePicker":"dateRangePicker","json.sortify":"json.sortify","leaflet":"leaflet","lodash":"lodash","moment":"moment","nvd3":"nvd3"}]},{},[31]);
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}]},{},[31]);
