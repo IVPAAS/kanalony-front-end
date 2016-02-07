@@ -198,8 +198,13 @@
   width: 33%;
   min-width: 320px;
 }
-.kau-app form input.date-picker {
-  width: 190px;
+.kau-app form div.date-picker {
+  background: #fff;
+  color: #333;
+  padding: 8px;
+  line-height: 18px;
+  border-radius: 4px;
+  border-width: 0 1px 4px;
 }
 .kau-app .usual-table thead {
   background-image: #efefef;
