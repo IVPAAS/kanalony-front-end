@@ -206,6 +206,9 @@
   border-radius: 4px;
   border-width: 0 1px 4px;
 }
+.kau-app form div.date-picker span {
+  cursor: pointer;
+}
 .kau-app .usual-table thead {
   background-image: #efefef;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#efefef));
@@ -306,6 +309,25 @@
 body {
   background: #f0eeef;
   min-width: 960px;
+}
+
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+  color: lightgray !important;
+  background: #fff !important;
+  cursor: not-allowed !important;
+}
+
+.daterangepicker td.in-range, .daterangepicker td.active, .daterangepicker td.active:hover {
+  background: #E4EEF7 !important;
+  color: black !important;
+}
+
+.daterangepicker td.end-date, .daterangepicker td.end-date:hover {
+  color: black !important;
+}
+
+.daterangepicker td.active, .daterangepicker td.active:hover {
+  font-weight: bolder;
 }
 
 /*# sourceMappingURL=main.css.map */

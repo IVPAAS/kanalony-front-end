@@ -1421,20 +1421,33 @@ module.exports = function()
             });
         }
 
+        function clearReportData()
+        {
+            self.reportData = null;
+
+            _.forEach(sections,function(section)
+            {
+                if (section.loadReportData)
+                {
+                    section.loadReportData.call(section, self.reportData);
+                }
+            });
+        }
+
         function addSection(section)
         {
             sections.push(section);
 
             // extend section api with functions that can trigger report actions
-            $.extend(section,{refreshReport : loadData});
+            $.extend(section,{refreshReport : loadData, clearReportData:clearReportData});
 
             // wait until all sections were added to load data
             if (sections.length=== self.reportConfig.sections.length)
             {
-                areAllSectionsLoaded = true;
-
                 $timeout(function()
                 {
+                    areAllSectionsLoaded = true;
+
                     // Loads the report data after all sections where registered in the next digest cycle
                     // TODO - should use more common technique.
                     loadData();
@@ -1517,10 +1530,10 @@ module.exports = function()
 
         function loadReportData(reportData)
         {
-            self.grid.data = [{key: '', values: reportData}];
-
+            var chartData = [];
             if (reportData )
             {
+                chartData = [{key: '', values: reportData}];
                 var itemsNumber = reportData.length;
 
                 if (itemsNumber > 5)
@@ -1533,6 +1546,8 @@ module.exports = function()
                     self.grid.options.chart.xAxis.rotateLabels = 0;
                 }
             }
+
+            self.grid.data = chartData;
 
             if (self.grid.api.updateWithData)
             {
@@ -1707,24 +1722,61 @@ module.exports = function()
                 reportTitle: 'Usage report'
             },self.filters);
 
-            self.reportStatus.isLoading = true;
-            self.reportStatus.errorMessage = false;
+            self.csvProcessing = true;
+            self.reportStatus.errorMessage = '';
             kauReportsData.getReportCSVUri(requestParams).then(function (result) {
-                self.reportStatus.isLoading = false;
-                kaAppRoutingUtils.openExternalUri(result.csvUri);
+
+                if (self.csvProcessing) {
+                    // if csvProcessing is off it means this response is not longer needed (user might performed a report query)
+                    self.csvProcessing = false;
+                    self.csvUrl = result.csvUri;
+                }
+
 
             }, function (reason) {
-                self.reportStatus.isLoading = false;
+                self.csvProcessing = false;
                 self.reportStatus.errorMessage = 'Error occurred while trying to create cvs file';
             });
 
         }
 
-        self.filters = { date : { startDate: moment().subtract(2, 'month').startOf('month'), endDate: moment().endOf('month')}};
+        function getDefaultDateRange()
+        {
+            return { startDate: moment().subtract(2, 'month').startOf('month'), endDate: moment().endOf('month')};
+        }
+
+        function clearCsvUrl()
+        {
+            self.csvUrl = '';
+        }
+
+
+        function checkIsDateValid(date)
+        {
+            var momentDate = moment.isMoment(date) ? date : moment(date);
+            return date ? moment(momentDate._i, momentDate._f,true).isValid() : false;
+        }
+
+        self.reportAPI = {
+            assignFilters : function(filters)
+            {
+                $.extend(filters, self.filters);
+            },
+            loadReportData : function(reportData)
+            {
+                self.reportData = reportData;
+            }
+        };
+
+
+        self.reportData = null;
+        self.csvProcessing = false;
+        self.csvUrl = '';
+        self.clearCsvUrl = clearCsvUrl;
+        self.filters = { date : getDefaultDateRange()};
 
         self.dateOptions = {
             showDropdowns : true,
-            autoApply : true,
             maxDate : moment(),
             ranges: {
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -1733,23 +1785,24 @@ module.exports = function()
             },
             isInvalidDate : function(date)
             {
-                return !moment(date).isValid();
-            }
-        };
-
-
-        self.reportAPI = {
-            assignFilters : function(filters)
-            {
-                $.extend(filters, self.filters);
+                return !checkIsDateValid(date);
             }
         };
 
         self.export = exportToCsv;
         $scope.$watch('vm.filters.date',function()
         {
-            if (self.reportAPI.refreshReport) {
-                self.reportAPI.refreshReport.call(null);
+            self.reportStatus.errorMessage = '';
+            if (checkIsDateValid(self.filters.date.startDate) && checkIsDateValid(self.filters.date.endDate))
+            {
+                if (self.reportAPI.refreshReport) {
+                    self.reportAPI.refreshReport.call(null);
+                }
+            }else {
+                self.reportStatus.errorMessage = 'Provided dates are invalid. Please try again with valid values.';
+                if (self.reportAPI.clearReportData) {
+                    self.reportAPI.clearReportData.call(null);
+                }
             }
         });
 
@@ -1771,6 +1824,11 @@ module.exports = function()
             },200);
         }
 
+        $scope.$watch('vm.reportStatus.isLoading',function()
+        {
+           self.csvUrl = false;
+            self.csvProcessing = false;
+        });
 
     }
 
@@ -2073,6 +2131,16 @@ module.exports = function($q, kaKalturaAPIFacade, kauReportsConfiguration)
         }
     }
 
+    function isValidCachedResponse(cachedItem)
+    {
+        if (cachedItem)
+        {
+            return cachedItem.expirationDate.isAfter(moment());
+        }
+
+        return false;
+    }
+
     function getReportData(filters)
     {
         if (filters && _.every(requireFiltersProperties, _.partial(_.has,filters))) {
@@ -2085,13 +2153,17 @@ module.exports = function($q, kaKalturaAPIFacade, kauReportsConfiguration)
 
             var cacheKey = JSON.sortify(requestParams);
             var cachedResponse = cachedReportsData[cacheKey];
-            if (cachedResponse)
+            if (isValidCachedResponse(cachedResponse))
             {
-                deferred.resolve(cachedResponse);
+                console.log('loading response from cache (cached data expires ' + cachedResponse.expirationDate.fromNow() + ')');
+                deferred.resolve(cachedResponse.response);
             }else {
+                cachedReportsData[cacheKey] = null;
 
                 kaKalturaAPIFacade.invoke('report', 'getTable', requestParams).then(function (result) {
-                    cachedReportsData[cacheKey] = result;
+                    var cachedResponseItem = {response : result, expirationDate : moment().add(1,'h')};
+                    console.log('added response to cache (cached data expires ' + cachedResponseItem.expirationDate.fromNow() + ')');
+                    cachedReportsData[cacheKey] = cachedResponseItem;
                     deferred.resolve(result);
                     }, function (reason) {
                         deferred.reject(reason);
